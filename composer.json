@@ -1,0 +1,8 @@
+{
+  "name": "frontkom/dtt-kernelish-base",
+  "description": "A base test class that can be used with dtt, but exclusively for direct Drupal integration, and not browser navigation.",
+  "type": "drupal-dtt",
+  "require": {
+    "weitzman/drupal-test-traits": "^2.0.0"
+  }
+}
