@@ -4,5 +4,6 @@
   "type": "drupal-dtt",
   "require": {
     "weitzman/drupal-test-traits": "^2.0.0"
-  }
+  },
+  "license": "MIT"
 }
