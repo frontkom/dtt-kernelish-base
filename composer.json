@@ -5,5 +5,10 @@
   "require": {
     "weitzman/drupal-test-traits": "^2.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "frontkom\\DttKernelishBase\\": "src/"
+    }
+  }
 }
