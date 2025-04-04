@@ -28,13 +28,13 @@ abstract class KernelishBase extends ExistingSiteBase
     {
     }
 
-  /**
-   * {@inheritdoc}
-   */
+   /**
+    * {@inheritdoc}
+    */
     public function tearDown(): void
     {
         $has_failed = false;
-      // For phpunit <= 9:
+        // For phpunit <= 9:
         if (method_exists($this, 'hasFailed')) {
             $has_failed = $this->hasFailed();
         }
