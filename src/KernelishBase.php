@@ -31,42 +31,45 @@ abstract class KernelishBase extends ExistingSiteBase
   /**
    * {@inheritdoc}
    */
-  public function tearDown(): void
-  {
-    $has_failed = FALSE;
-    // For phpunit <= 9:
-    if (method_exists($this, 'hasFailed')) {
-      $has_failed = $this->hasFailed();
-    }
-    $database = $this->container->get('database');
-    if ($has_failed) {
-      if ($database->schema()->tableExists('watchdog')) {
-        $messages = $database
-          ->select('watchdog', 'w')
-          ->fields('w')
-          ->orderBy('w.wid', 'DESC')
-          ->range(0, 10)
-          ->execute()
-          ->fetchAll();
-        if (!empty($messages)) {
-          foreach ($messages as $error) {
-            // Perform replacements so the error message is easier to
-            // read in the log.
-            // @codingStandardsIgnoreLine
-            $error->variables = unserialize($error->variables);
-            $error->message = str_replace(array_keys($error->variables),
-              $error->variables, $error->message);
-            unset($error->variables);
-            print_r($error);
-          }
+    public function tearDown(): void
+    {
+        $has_failed = false;
+      // For phpunit <= 9:
+        if (method_exists($this, 'hasFailed')) {
+            $has_failed = $this->hasFailed();
         }
-      } else {
-        // Print a warning if the watchdog table does not exist.
-        print_r('Watchdog table does not exist. Please check your test environment.');
-      }
+        $database = $this->container->get('database');
+        if ($has_failed) {
+            if ($database->schema()->tableExists('watchdog')) {
+                $messages = $database
+                ->select('watchdog', 'w')
+                ->fields('w')
+                ->orderBy('w.wid', 'DESC')
+                ->range(0, 10)
+                ->execute()
+                ->fetchAll();
+                if (!empty($messages)) {
+                    foreach ($messages as $error) {
+                    // Perform replacements so the error message is easier to
+                    // read in the log.
+                    // @codingStandardsIgnoreLine
+                    $error->variables = unserialize($error->variables);
+                        $error->message = str_replace(
+                            array_keys($error->variables),
+                            $error->variables,
+                            $error->message
+                        );
+                        unset($error->variables);
+                        print_r($error);
+                    }
+                }
+            } else {
+              // Print a warning if the watchdog table does not exist.
+                print_r('Watchdog table does not exist. Please check your test environment.');
+            }
+        }
+        parent::tearDown();
     }
-    parent::tearDown();
-  }
 
     
   /**
