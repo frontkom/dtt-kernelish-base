@@ -10,5 +10,14 @@
     "psr-4": {
       "frontkom\\DttKernelishBase\\": "src/"
     }
+  },
+  "require-dev": {
+    "slevomat/coding-standard": "^8.16",
+    "phpstan/phpstan": "^2.1"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }
