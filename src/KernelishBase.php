@@ -36,4 +36,37 @@ abstract class KernelishBase extends ExistingSiteBase {
       throw new \Exception('Kernelish tests does not support HTTP requests');
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function tearDown(): void {
+    $has_failed = FALSE;
+    // For phpunit <= 9:
+    if (method_exists($this, 'hasFailed')) {
+      $has_failed = $this->hasFailed();
+    }
+    $database = $this->container->get('database');
+    if ($has_failed && $database->schema()->tableExists('watchdog')) {
+      $messages = $database
+        ->select('watchdog', 'w')
+        ->fields('w')
+        ->orderBy('w.wid', 'DESC')
+        ->range(0, 10)
+        ->execute()
+        ->fetchAll();
+      if (!empty($messages)) {
+        foreach ($messages as $error) {
+          // Perform replacements so the error message is easier to
+          // read in the log.
+          // @codingStandardsIgnoreLine
+          $error->variables = unserialize($error->variables);
+          $error->message = str_replace(array_keys($error->variables), $error->variables, $error->message);
+          unset($error->variables);
+          print_r($error);
+        }
+      }
+    }
+    parent::tearDown();
+  }
+
 }
