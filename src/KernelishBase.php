@@ -31,7 +31,7 @@ abstract class KernelishBase extends ExistingSiteBase
   /**
    * {@inheritdoc}
    */
-    public function drupalGet($path, array $options = [], array $headers = [])
+    public function drupalGet($path, array $options = [], array $headers = []) : string
     {
         // This function should probably not be needed to be implemented, since the
         // base URL will be set to a non-working value. But since that will give a
